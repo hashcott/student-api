@@ -25,7 +25,7 @@ class StudentAPI {
     }
     return this._browser;
   }
-  async login(user, opts = {}) {
+  async Login(user, opts = {}) {
     const browser = await this.browser();
     try {
       await Login(browser, user, opts);
