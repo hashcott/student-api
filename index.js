@@ -2,12 +2,11 @@
 const puppeteer = require("puppeteer");
 const Login = require("./pages/Login");
 const StudentTimeTable = require("./pages/StudentTimeTable");
-
-// Require custom lib
+const { generateTimeline, generateTimelineByDay } = require("./util/timeline");
 
 // Main
 
-class PuppeteerCMC {
+class StudentAPI {
   constructor(opts = {}) {
     this._opts = opts;
     this._user = null;
@@ -37,9 +36,18 @@ class PuppeteerCMC {
   }
   async StudentTimeTable(term) {
     const browser = await this.browser();
-    await StudentTimeTable(browser, term);
+    if (!this._timeTable) {
+      this._timeTable = await StudentTimeTable(browser, term);
+    }
+    return this._timeTable;
   }
-  async close() {
+  TimeLineByDay() {
+    if (!this._timeTable) throw new Error("Chưa có dữ liệu môn học");
+    let timelines = generateTimeline(this._timeTable);
+    let days = generateTimelineByDay(timelines);
+    return days;
+  }
+  async Close() {
     const browser = await this.browser();
     await browser.close();
 
@@ -47,4 +55,4 @@ class PuppeteerCMC {
     this._user = null;
   }
 }
-module.exports = PuppeteerCMC;
+module.exports = StudentAPI;

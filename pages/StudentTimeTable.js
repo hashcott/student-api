@@ -1,6 +1,8 @@
 const delay = require("delay");
 const StudentTimeTableSL = require("../selectors/StudentTimeTable");
 const { generateTimelineByDay, generateTimeline } = require("../util/timeline");
+const { matches } = require("lodash");
+const { locale } = require("moment");
 
 module.exports = async (browser, term) => {
   const page = await browser.newPage();
@@ -16,6 +18,8 @@ module.exports = async (browser, term) => {
     //Regex bóc dữ liệu ngày tháng và thời gian học
     const data_pattern = /(.+?) đến (.+?):/;
     const time_pattern = /Thứ ([0-9]) tiết ([0-9,]+?) \((.+?)\)/;
+    const location_pattern1 = /\(([0-9])+\)\n(.+)/g;
+    const location_pattern2 = /\(([0-9])+\)\n(.+)/g;
 
     // Bóc dữ liệu html lịch học từng môn
     let timeTableHTML = [
@@ -56,6 +60,7 @@ module.exports = async (browser, term) => {
 
     /* Chuyển dữ liệu thời gian từng môn học về dạng thời gian theo từng giai đoạn học  */
     timeTable.forEach((data, i) => {
+      // Chuẩn hóa thời gian
       let getTimePhase = data.thoiGian.split("Từ");
       getTimePhase = getTimePhase.filter((time) => time != "");
       let phases = [];
@@ -71,11 +76,25 @@ module.exports = async (browser, term) => {
           periods = periods.split(",");
           ranges.push({ day, periods, type });
         } while (timePhase.length > 0);
-        phases.push({ start, end, ranges });
+        phases.push({ start, end, ranges, location: "" });
+      }
+
+      // Chuẩn hóa địa chỉ học
+      if (phases.length > 1) {
+        let matches;
+        do {
+          let matches = location_pattern1.exec(data.diaDiem);
+          if (matches) {
+            let [, phase, location] = matches;
+            phases[+phase - 1].location = location;
+          }
+        } while (matches);
+      } else {
+        phases[0].location = data.diaDiem;
       }
       timeTable[i].thoiGian = phases;
+      delete timeTable[i].diaDiem;
     });
-    console.log(timeTable);
     return timeTable;
   });
   await page.close();
