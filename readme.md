@@ -33,7 +33,7 @@ await api.Close();
   - [StudentTimeTable](#studenttimetable)
   - [TimeLineByDay](#timelinebyday)
 
-### [StudentAPI](https://github.com/2ksoft/student-api/blob/master/index.js#L10-13)
+### [StudentAPI](https://github.com/2ksoft/student-api/blob/master/index.js#L10-L13)
 
 Type: `function (opts)`
 
@@ -43,7 +43,7 @@ Type: `function (opts)`
 
 ---
 
-#### [isAuthenticated](https://github.com/2ksoft/student-api/blob/master/index.js#L15-17)
+#### [isAuthenticated](https://github.com/2ksoft/student-api/blob/master/index.js#L15-L17)
 
 Kiểm tra đăng nhập thành công hay không ?
 
@@ -51,7 +51,7 @@ Type: [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Glob
 
 ---
 
-#### [user](https://github.com/2ksoft/student-api/blob/master/index.js#L18-20)
+#### [user](https://github.com/2ksoft/student-api/blob/master/index.js#L18-L20)
 
 Trả về user đã đăng nhập thành công
 
@@ -59,7 +59,7 @@ Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 
 ---
 
-#### [browser](https://github.com/2ksoft/student-api/blob/master/index.js#L21-27)
+#### [browser](https://github.com/2ksoft/student-api/blob/master/index.js#L21-L27)
 
 Khởi chạy browser headless.
 
@@ -67,7 +67,7 @@ Type: `function ()`
 
 ---
 
-#### [Login](https://github.com/2ksoft/student-api/blob/master/index.js#L28-36)
+#### [Login](https://github.com/2ksoft/student-api/blob/master/index.js#L28-L36)
 
 Automates the creation of a new Instagram account.
 
