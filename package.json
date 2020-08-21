@@ -1,6 +1,6 @@
 {
   "name": "student-api",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Crawler thông tin từ các website trường học sử dụng CMC",
   "main": "index.js",
   "scripts": {
