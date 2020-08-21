@@ -1,6 +1,7 @@
 // Require dependencies
 const puppeteer = require("puppeteer");
 const Login = require("./pages/Login");
+const StudentTimeTable = require("./pages/StudentTimeTable");
 
 // Require custom lib
 
@@ -33,6 +34,10 @@ class PuppeteerCMC {
     } catch (error) {
       console.log(error.message);
     }
+  }
+  async StudentTimeTable(term) {
+    const browser = await this.browser();
+    await StudentTimeTable(browser, term);
   }
   async close() {
     const browser = await this.browser();
