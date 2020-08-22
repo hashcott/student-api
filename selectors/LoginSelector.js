@@ -1,5 +1,6 @@
 module.exports = {
-  id: "#txtUserName",
-  pass: "#txtPassword",
-  login: "#btnSubmit",
+  account: "#txtUserName",
+  password: "#txtPassword",
+  btnLogin: "#btnSubmit",
+  userRole: "#PageHeader1_lblUserRole",
 };

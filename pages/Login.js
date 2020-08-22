@@ -1,17 +1,24 @@
-const delay = require("delay");
-const LoginSelector = require("../selectors/LoginSelector");
+const {
+  account,
+  password,
+  btnLogin,
+  userRole,
+} = require("../selectors/LoginSelector");
 
-module.exports = async (browser, user, opts) => {
+module.exports = async (browser, { idUser, passwordUser } = user) => {
+  // Tạo page mới
   const page = await browser.newPage();
+  // Truy cập vào trang đăng nhập
   await page.goto("http://dkh.tlu.edu.vn/cmcsoft.iu.web.info/Login.aspx");
-  await page.type(LoginSelector.id, user.id);
-  await page.type(LoginSelector.pass, user.pass);
-  await page.click(LoginSelector.login);
-  await page.waitForSelector("#footer_1");
-  const element = await page.$("#PageHeader1_lblUserRole");
+  // Điền thông tin đăng nhập vào trong input
+  await page.type(account, idUser);
+  await page.type(password, passwordUser);
+  // Click button đăng nhập
+  await page.click(btnLogin);
+  await page.waitForSelector(userRole);
+  // Check xem có đăng nhập thành công hay không ?
+  const element = await page.$(userRole);
   const text = await (await element.getProperty("textContent")).jsonValue();
-  if (text.length == 0) {
-    throw new Error("Lỗi đăng nhập");
-  }
+  if (!text.length) throw new Error("Lỗi đăng nhập");
   await page.close();
 };

@@ -1,4 +1,4 @@
 module.exports = {
-  term: "#drpSemester",
-  table: "#gridRegistered",
+  termSelector: "#drpSemester",
+  tableSelector: "#gridRegistered tr",
 };

@@ -12,11 +12,11 @@ npm install --save student-api
 
 ```js
 const StudentAPI = require("student-api");
-
-const api = new StudentAPI();
-
-await api.Login({ id: "xxx", pass: "xxx" });
-await api.Close();
+(async () => {
+  const api = new StudentAPI();
+  await api.Login({ id: "xxx", pass: "xxx" });
+  await api.Close();
+})();
 ```
 
 ## API
@@ -69,14 +69,13 @@ Type: `function ()`
 
 #### [Login](https://github.com/2ksoft/student-api/blob/master/index.js#L28-L36)
 
-Automates the creation of a new Instagram account.
+Đăng nhập tự động
 
-Type: `function (user, opts): Promise`
+Type: `function (user): Promise`
 
 - `user` **[object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** Tài khoản
   - `user.id` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** Tên tài khoản
   - `user.pass` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)?** Mật khẩu
-- `opts` **[object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** Options (optional, default `{}`)
 
 ---
 

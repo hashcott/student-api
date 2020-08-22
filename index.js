@@ -7,37 +7,51 @@ const { generateTimeline, generateTimelineByDay } = require("./util/timeline");
 // Main
 
 class StudentAPI {
+  // Khởi tạo
   constructor(opts = {}) {
     this._opts = opts;
     this._user = null;
   }
 
+  // Kiểm tra user có tồn tại không => boolean
   get isAuthenticated() {
     return !!this._user;
   }
+  // Trả về user
   get user() {
     return this._user;
   }
-  async browser() {
+
+  // Khởi chạy browser
+  async Browser() {
+    // Nếu browser đã tồn tại thì trả về cái cũ , nếu không khởi tạo browser mới
     if (!this._browser) {
       this._browser =
         this._opts.browser || (await puppeteer.launch(this._opts.puppeteer));
     }
     return this._browser;
   }
-  async Login(user, opts = {}) {
-    const browser = await this.browser();
+
+  // Hàm đăng nhập
+  async Login(user) {
+    const browser = await this.Browser();
+    // Nếu không phát sinh lỗi (đăng nhập thành công) thì this._user sẽ tồn tại
     try {
-      await Login(browser, user, opts);
+      await Login(browser, user);
       this._user = user;
     } catch (error) {
-      console.log(error.message);
+      throw new Error("Không thể đăng nhập");
     }
   }
+
   async StudentTimeTable(term) {
-    const browser = await this.browser();
+    const browser = await this.Browser();
     if (!this._timeTable) {
-      this._timeTable = await StudentTimeTable(browser, term);
+      try {
+        this._timeTable = await StudentTimeTable(browser, term);
+      } catch (error) {
+        throw new Error("Không lấy được dữ liệu môn học");
+      }
     }
     return this._timeTable;
   }
@@ -48,7 +62,7 @@ class StudentAPI {
     return days;
   }
   async Close() {
-    const browser = await this.browser();
+    const browser = await this.Browser();
     await browser.close();
 
     this._browser = null;

@@ -1,16 +1,15 @@
-const delay = require("delay");
-const StudentTimeTableSL = require("../selectors/StudentTimeTable");
-const { generateTimelineByDay, generateTimeline } = require("../util/timeline");
-const { matches } = require("lodash");
-const { locale } = require("moment");
+const {
+  termSelector,
+  tableSelector,
+} = require("../selectors/StudentTimeTable");
 
 module.exports = async (browser, term) => {
   const page = await browser.newPage();
   await page.goto(
     "http://dkh.tlu.edu.vn/CMCSoft.IU.Web.Info/Reports/Form/StudentTimeTable.aspx"
   );
-  await page.type(StudentTimeTableSL.term, term);
-  await page.waitForSelector(StudentTimeTableSL.table);
+  await page.type(termSelector, term);
+  await page.waitForSelector(tableSelector);
   const timeTable = await page.evaluate(() => {
     // Lưu lại dữ liệu về lịch học các môn
     let timeTable = [];
@@ -18,8 +17,7 @@ module.exports = async (browser, term) => {
     //Regex bóc dữ liệu ngày tháng và thời gian học
     const data_pattern = /(.+?) đến (.+?):/;
     const time_pattern = /Thứ ([0-9]) tiết ([0-9,]+?) \((.+?)\)/;
-    const location_pattern1 = /\(([0-9])+\)\n(.+)/g;
-    const location_pattern2 = /\(([0-9])+\)\n(.+)/g;
+    const location_pattern = /\(([0-9])+\)\n(.+)/g;
 
     // Bóc dữ liệu html lịch học từng môn
     let timeTableHTML = [
@@ -83,7 +81,7 @@ module.exports = async (browser, term) => {
       if (phases.length > 1) {
         let matches;
         do {
-          let matches = location_pattern1.exec(data.diaDiem);
+          let matches = location_pattern.exec(data.diaDiem);
           if (matches) {
             let [, phase, location] = matches;
             phases[+phase - 1].location = location;

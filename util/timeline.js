@@ -13,7 +13,6 @@ const generateTimestamps = (start, end, day) => {
   // Kiểm tra ngày bắt đầu còn nhỏ hơn ngày kết thúc không , nếu có thêm vào timeline
   while (start.isSameOrBefore(end)) {
     timeLine.push(start.clone());
-
     //Tăng thêm 1 tuần để kiểm tra tiếp
     start.add(1, "week");
   }
@@ -40,6 +39,7 @@ const generateTimeline = (subjects) => {
   for (let subject of subjects) {
     for (let phase of subject.thoiGian) {
       for (let range of phase.ranges) {
+        console.log(range);
         let timeline = generateClasses(
           generateTimestamps(
             parseTime(phase.start),
@@ -47,7 +47,7 @@ const generateTimeline = (subjects) => {
             parseInt(range.day) - 2
           ),
           range.periods[0],
-          range.periods.pop()
+          range.periods[range.periods.length - 1]
         );
         timeline.forEach((timestamp) => {
           let data = { timestamp, ...subject, ...range };
@@ -64,7 +64,7 @@ const generateTimeline = (subjects) => {
 //
 const generateTimelineByDay = (timelines) => {
   let days = _.groupBy(timelines, (timeline) => {
-    return timeline.timestamp.start.startOf("day");
+    return timeline.timestamp.start.clone().startOf("day");
   });
   return days;
 };
