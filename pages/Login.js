@@ -5,11 +5,12 @@ const {
   userRole,
 } = require("../selectors/LoginSelector");
 
-module.exports = async (browser, { idUser, passwordUser } = user) => {
+module.exports = async (browser, user, baseURL) => {
+  const { idUser, passwordUser } = user;
   // Tạo page mới
   const page = await browser.newPage();
   // Truy cập vào trang đăng nhập
-  await page.goto("http://dkh.tlu.edu.vn/cmcsoft.iu.web.info/Login.aspx");
+  await page.goto(`${baseURL}/cmcsoft.iu.web.info/Login.aspx`);
   // Điền thông tin đăng nhập vào trong input
   await page.type(account, idUser);
   await page.type(password, passwordUser);

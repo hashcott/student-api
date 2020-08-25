@@ -1,15 +1,8 @@
-const {
-  termSelector,
-  tableSelector,
-} = require("../selectors/StudentTimeTable");
-
-module.exports = async (browser, term, baseURL) => {
+module.exports = async (browser, baseURL) => {
   const page = await browser.newPage();
   await page.goto(
-    `${baseURL}/CMCSoft.IU.Web.Info/Reports/Form/StudentTimeTable.aspx`,
+    `${baseURL}/CMCSoft.IU.Web.info/StudyRegister/StudyRegister.aspx`,
   );
-  await page.type(termSelector, term);
-  await page.waitForSelector(tableSelector);
   const timeTable = await page.evaluate(() => {
     // Lưu lại dữ liệu về lịch học các môn
     let timeTable = [];
@@ -20,20 +13,22 @@ module.exports = async (browser, term, baseURL) => {
     const location_pattern = /\(([0-9])+\)\n(.+)/g;
 
     // Bóc dữ liệu html lịch học từng môn
-    let timeTableHTML = [
-      ...document.querySelectorAll("#gridRegistered tr"),
-    ].slice(1, 11);
+    let timeTableHTML = Array.from(
+      document.querySelectorAll("#gridRegistered tr"),
+    );
+    timeTableHTML = timeTableHTML.slice(1, timeTableHTML.length - 1);
 
     for (let html of timeTableHTML) {
-      let subjectHTML = [...html.querySelectorAll("td")];
-
+      let subjectHTML = Array.from(html.querySelectorAll("td"));
       // Chuyển dữ liệu từng môn hoc về dạng text
       let [
         STT,
+        ,
         lopHocPhan,
         hocPhan,
         thoiGian,
         diaDiem,
+        giangVien,
         siSo,
         daDk,
         soTc,
@@ -48,6 +43,7 @@ module.exports = async (browser, term, baseURL) => {
         hocPhan,
         thoiGian,
         diaDiem,
+        giangVien,
         siSo,
         daDk,
         soTc,
@@ -71,7 +67,7 @@ module.exports = async (browser, term, baseURL) => {
           .map((x) => x.trim());
         do {
           let [, day, periods, type] = time_pattern.exec(timePhase.shift());
-          periods = periods.split(",");
+          periods = periods.split(",").map((period) => parseInt(period));
           ranges.push({ day, periods, type });
         } while (timePhase.length > 0);
         phases.push({ start, end, ranges, location: "" });
