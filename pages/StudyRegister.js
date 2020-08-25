@@ -1,7 +1,16 @@
 module.exports = async (browser, baseURL) => {
   const page = await browser.newPage();
+  await page.setRequestInterception(true);
+  page.on("request", (request) => {
+    if (["image", "stylesheet"].indexOf(request.resourceType()) != -1) {
+      return request.abort();
+    } else {
+      return request.continue();
+    }
+  });
   await page.goto(
     `${baseURL}/CMCSoft.IU.Web.info/StudyRegister/StudyRegister.aspx`,
+    { waitUntil: "networkidle2" },
   );
   const timeTable = await page.evaluate(() => {
     // Lưu lại dữ liệu về lịch học các môn
@@ -92,5 +101,6 @@ module.exports = async (browser, baseURL) => {
     return timeTable;
   });
   await page.close();
+  if (timeTable.length === 0) throw new Error();
   return timeTable;
 };

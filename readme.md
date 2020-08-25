@@ -13,9 +13,13 @@ npm install --save student-api
 ```js
 const StudentAPI = require("student-api");
 (async () => {
+  const config = {
+    baseURL: "http://dkh.tlu.edu.vn",
+  };
   const api = new StudentAPI();
-  await api.Login({ id: "xxx", pass: "xxx" });
-  await api.Close();
+  api.config(config);
+  await api.login({ id: "xxx", pass: "xxx" });
+  await api.close();
 })();
 ```
 
@@ -26,6 +30,7 @@ const StudentAPI = require("student-api");
 #### Table of Contents
 
 - [StudentAPI](#studentapi)
+  - [config](#studentapi)
   - [isAuthenticated](#isauthenticated)
   - [user](#user)
   - [browser](#browser)
@@ -33,17 +38,18 @@ const StudentAPI = require("student-api");
   - [StudentTimeTable](#studenttimetable)
   - [TimeLineByDay](#timelinebyday)
 
-### [StudentAPI](https://github.com/2ksoft/student-api/blob/master/index.js#L10-L13)
+### [config](https://github.com/2ksoft/student-api/blob/master/index.js#L25-L28)
 
-Type: `function (opts)`
+Type: `function config (opts)`
 
 - `opts` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** Options (optional, default `{}`)
+  - **`opts.baseURL`** : Địa chỉ web trường bạn (_Bắt buộc phải có_)
   - `opts.browser` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** Puppeteer browser instance to use
   - `opts.puppeteer` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** Puppeteer [launch options](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#puppeteerlaunchoptions)
 
 ---
 
-#### [isAuthenticated](https://github.com/2ksoft/student-api/blob/master/index.js#L15-L17)
+#### [isAuthenticated](https://github.com/2ksoft/student-api/blob/master/index.js#L31-L33)
 
 Kiểm tra đăng nhập thành công hay không ?
 
@@ -51,7 +57,7 @@ Type: [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Glob
 
 ---
 
-#### [user](https://github.com/2ksoft/student-api/blob/master/index.js#L18-L20)
+#### [user](https://github.com/2ksoft/student-api/blob/master/index.js#L35-L37)
 
 Trả về user đã đăng nhập thành công
 
@@ -59,7 +65,7 @@ Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 
 ---
 
-#### [browser](https://github.com/2ksoft/student-api/blob/master/index.js#L21-L27)
+#### [browser](https://github.com/2ksoft/student-api/blob/master/index.js#L40-L55)
 
 Khởi chạy browser headless.
 
@@ -67,7 +73,7 @@ Type: `function ()`
 
 ---
 
-#### [Login](https://github.com/2ksoft/student-api/blob/master/index.js#L28-L36)
+#### [login](https://github.com/2ksoft/student-api/blob/master/index.js#L58-L67)
 
 Đăng nhập tự động
 
@@ -79,7 +85,23 @@ Type: `function (user): Promise`
 
 ---
 
-#### [TimeLineByDay](https://github.com/2ksoft/student-api/blob/master/index.js#L44-L49)
+#### [studentTimeTable](https://github.com/2ksoft/student-api/blob/master/index.js#L70-L83)
+
+Trả về lịch học theo kì
+
+Type: [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)
+
+---
+
+#### [studyRegister](https://github.com/2ksoft/student-api/blob/master/index.js#L84-L97)
+
+Trả về lịch học mới đăng kí
+
+Type: [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)
+
+---
+
+#### [timeLineByDay](https://github.com/2ksoft/student-api/blob/master/index.js#L99-L104)
 
 Trả về lịch học được nhóm theo ngày
 
@@ -87,7 +109,19 @@ Type: [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/
 
 ---
 
-#### [Close](https://github.com/2ksoft/student-api/blob/master/index.js#L50-L56)
+#### [getMarks](https://github.com/2ksoft/student-api/blob/master/index.js#L107-L117)
+
+Trả về lịch học được nhóm theo ngày
+
+```
+{terms : ... , listMarks : ..., totals : ...}
+```
+
+Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+
+---
+
+#### [close](https://github.com/2ksoft/student-api/blob/master/index.js#L118-L123)
 
 Closes the underlying browser instance, effectively ending this session.
 

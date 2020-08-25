@@ -5,8 +5,17 @@ const {
 
 module.exports = async (browser, term, baseURL) => {
   const page = await browser.newPage();
+  await page.setRequestInterception(true);
+  page.on("request", (request) => {
+    if (["image", "stylesheet"].indexOf(request.resourceType()) != -1) {
+      return request.abort();
+    } else {
+      return request.continue();
+    }
+  });
   await page.goto(
     `${baseURL}/CMCSoft.IU.Web.Info/Reports/Form/StudentTimeTable.aspx`,
+    { waitUntil: "networkidle2" },
   );
   await page.type(termSelector, term);
   await page.waitForSelector(tableSelector);
@@ -96,5 +105,6 @@ module.exports = async (browser, term, baseURL) => {
     return timeTable;
   });
   await page.close();
+  if (timeTable.length === 0) throw new Error();
   return timeTable;
 };
