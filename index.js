@@ -59,8 +59,8 @@ class StudentAPI {
     try {
       const browser = await this.browser();
       // Nếu không phát sinh lỗi (đăng nhập thành công) thì this._user sẽ tồn tại
-      await Login(browser, user, this._baseURL);
-      this._user = user;
+      const name = await Login(browser, user, this._baseURL);
+      this._user = { name, id: user.idUser, password: user.passwordUser };
     } catch (error) {
       throw new Error("Không thể đăng nhập");
     }
