@@ -39,7 +39,6 @@ const generateTimeline = (subjects) => {
   for (let subject of subjects) {
     for (let phase of subject.thoiGian) {
       for (let range of phase.ranges) {
-        console.log(range);
         let timeline = generateClasses(
           generateTimestamps(
             parseTime(phase.start),
