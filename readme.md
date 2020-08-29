@@ -18,7 +18,7 @@ const StudentAPI = require("student-api");
   };
   const api = new StudentAPI();
   api.config(config);
-  await api.login({ id: "xxx", pass: "xxx" });
+  await api.login({ idUser: "xxx", passwordUser: "xxx" });
   await api.close();
 })();
 ```
@@ -75,13 +75,13 @@ Type: `function ()`
 
 #### [login](https://github.com/2ksoft/student-api/blob/master/index.js#L58-L67)
 
-Đăng nhập tự động
+Đăng nhập tự động.
 
 Type: `function (user): Promise`
 
 - `user` **[object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** Tài khoản
-  - `user.id` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** Tên tài khoản
-  - `user.pass` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)?** Mật khẩu
+  - `user.idUser` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** Tên tài khoản
+  - `user.passwordUser` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)?** Mật khẩu
 
 ---
 
