@@ -8,9 +8,12 @@ module.exports = async (browser, baseURL) => {
       return request.continue();
     }
   });
+  page.on("dialog", async (dialog) => {
+    await dialog.accept();
+  });
   await page.goto(
     `${baseURL}/CMCSoft.IU.Web.info/StudyRegister/StudyRegister.aspx`,
-    { waitUntil: "networkidle2" },
+    { waitUntil: "networkidle2" }
   );
   const timeTable = await page.evaluate(() => {
     // Lưu lại dữ liệu về lịch học các môn
@@ -23,7 +26,7 @@ module.exports = async (browser, baseURL) => {
 
     // Bóc dữ liệu html lịch học từng môn
     let timeTableHTML = Array.from(
-      document.querySelectorAll("#gridRegistered tr"),
+      document.querySelectorAll("#gridRegistered tr")
     );
     timeTableHTML = timeTableHTML.slice(1, timeTableHTML.length - 1);
 
