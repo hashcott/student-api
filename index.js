@@ -88,7 +88,9 @@ class StudentAPI {
     if (!this._timeTable) {
       try {
         const browser = await this.browser();
-        this._timeTable = await StudyRegister(browser, this._baseURL);
+        let data = await StudyRegister(browser, this._baseURL);
+        this._timeTable = data.timeTable;
+        return data.term;
       } catch (error) {
         throw new Error("Không lấy được dữ liệu môn học");
       }

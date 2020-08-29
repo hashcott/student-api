@@ -23,7 +23,9 @@ module.exports = async (browser, baseURL) => {
     const data_pattern = /(.+?) đến (.+?):/;
     const time_pattern = /Thứ ([0-9]) tiết ([0-9,]+?) \((.+?)\)/;
     const location_pattern = /\(([0-9])+\)\n(.+)/g;
-
+    const regex = /(\d+\_\d+)?\d+/g;
+    const termText = document.getElementById("lblTitle").innerText;
+    const term = termText.match(regex).join("");
     // Bóc dữ liệu html lịch học từng môn
     let timeTableHTML = Array.from(
       document.querySelectorAll("#gridRegistered tr")
@@ -101,7 +103,7 @@ module.exports = async (browser, baseURL) => {
       timeTable[i].thoiGian = phases;
       delete timeTable[i].diaDiem;
     });
-    return timeTable;
+    return { term, timeTable };
   });
   await page.close();
   if (timeTable.length === 0) throw new Error();
