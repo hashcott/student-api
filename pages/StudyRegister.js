@@ -100,7 +100,6 @@ module.exports = async (browser, baseURL) => {
       } else {
         phases[0].location = data.diaDiem;
       }
-      console.log(phases);
       timeTable[i].thoiGian = phases;
       delete timeTable[i].diaDiem;
     });
