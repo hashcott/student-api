@@ -49,7 +49,12 @@ const generateTimeline = (subjects) => {
           range.periods[range.periods.length - 1]
         );
         timeline.forEach((timestamp) => {
-          let data = { timestamp, ...subject, ...range };
+          let data = {
+            timestamp,
+            ...subject,
+            ...range,
+            location: phase.location,
+          };
           delete data.thoiGian;
           delete data.STT;
           timelines.push(data);
@@ -64,6 +69,12 @@ const generateTimeline = (subjects) => {
 const generateTimelineByDay = (timelines) => {
   let days = _.groupBy(timelines, (timeline) => {
     return timeline.timestamp.start.clone().startOf("day");
+  });
+  Object.keys(days).forEach(function (key) {
+    let name = moment(key).format("YYYY-MM-DD");
+
+    days[name] = days[key];
+    delete days[key];
   });
   return days;
 };
